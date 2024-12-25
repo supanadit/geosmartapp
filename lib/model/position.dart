@@ -7,12 +7,17 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Position {
-  String id;
-  String type;
-  String lat;
-  String lng;
+  late String id;
+  late String type;
+  late String lat;
+  late String lng;
 
-  Position({this.id, this.type, this.lat, this.lng});
+  Position({
+    required this.id,
+    required this.type,
+    required this.lat,
+    required this.lng,
+  });
 
   Position.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -33,15 +38,15 @@ class Position {
   static Future<Position> getPosition() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     String keyName = "unique_id";
-    String spId = (sp.getString(keyName) ?? null);
+    String? spId = (sp.getString(keyName));
     Position position = new Position(
-      id: spId,
+      id: spId ?? "",
       type: "user",
       lat: "0.0",
       lng: "0.0",
     );
     if (spId == null) {
-      final response = await http.get(Config.api + "/id/get/unique");
+      final response = await http.get(("${Config.api}/id/get/unique") as Uri);
       if (response.statusCode == 200) {
         position.id = UniqueIDModel.fromJson(json.decode(response.body)).id;
       } else {
@@ -53,14 +58,15 @@ class Position {
   }
 
   bool isValid() {
+    // ignore: unnecessary_null_comparison
     return id != null;
   }
 
   Future<ResponseModel> sendPosition() async {
     ResponseModel result;
     final response = await http.post(
-      Config.api + "/point/set",
-      body: json.encode(this.toJson()),
+      ("${Config.api}/point/set") as Uri,
+      body: json.encode(toJson()),
     );
     if (response.statusCode == 200) {
       result = ResponseModel.fromJson(json.decode(response.body));
@@ -73,8 +79,8 @@ class Position {
   Future<ResponseModel> stopPosition() async {
     ResponseModel result;
     final response = await http.post(
-      Config.api + "/point/unset",
-      body: json.encode(this.toJson()),
+      ("${Config.api}/point/unset") as Uri,
+      body: json.encode(toJson()),
     );
     if (response.statusCode == 200) {
       result = ResponseModel.fromJson(json.decode(response.body));

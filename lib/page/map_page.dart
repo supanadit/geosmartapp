@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart' as geo;
 import 'package:geolocator/geolocator.dart';
 import 'package:geosmart/bloc/bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatefulWidget {
-  MapPage({Key key, this.title}) : super(key: key);
+  MapPage({required this.title});
 
   final String title;
 
@@ -93,10 +92,12 @@ class _MapPageState extends State<MapPage> {
                   margin: EdgeInsets.only(left: 10.0),
                 ),
                 Container(
-                  child: FlatButton(
-                    color: (state is PositionTrackingStarted)
-                        ? Colors.redAccent
-                        : Colors.green,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: (state is PositionTrackingStarted)
+                          ? Colors.redAccent
+                          : Colors.green,
+                    ),
                     onPressed: () async {
                       if (state is PositionTrackingStarted) {
                         BlocProvider.of<PositionBloc>(ctx).add(

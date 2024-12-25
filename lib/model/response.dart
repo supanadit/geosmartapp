@@ -1,9 +1,9 @@
 class ResponseModel {
   final String errorMessage = "error";
 
-  String status;
+  late String status;
 
-  ResponseModel({this.status});
+  ResponseModel({required this.status});
 
   ResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];

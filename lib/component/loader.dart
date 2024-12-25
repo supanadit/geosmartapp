@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 enum DotType { square, circle, diamond, icon }
 
@@ -11,23 +12,24 @@ class Loader extends StatefulWidget {
   final DotType dotType;
   final Icon dotIcon;
 
-  Loader(
-      {this.dotOneColor = Colors.redAccent,
-      this.dotTwoColor = Colors.green,
-      this.dotThreeColor = Colors.blueAccent,
-      this.duration = const Duration(milliseconds: 1000),
-      this.dotType = DotType.circle,
-      this.dotIcon = const Icon(Icons.blur_on)});
+  Loader({
+    this.dotOneColor = Colors.redAccent,
+    this.dotTwoColor = Colors.green,
+    this.dotThreeColor = Colors.blueAccent,
+    this.duration = const Duration(milliseconds: 1000),
+    this.dotType = DotType.circle,
+    this.dotIcon = const Icon(Icons.blur_on),
+  });
 
   @override
   _LoaderState createState() => _LoaderState();
 }
 
 class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
-  Animation<double> animation_1;
-  Animation<double> animation_2;
-  Animation<double> animation_3;
-  AnimationController controller;
+  late Animation<double> animation_1;
+  late Animation<double> animation_2;
+  late Animation<double> animation_3;
+  late AnimationController controller;
 
   @override
   void initState() {
@@ -143,18 +145,23 @@ class Dot extends StatelessWidget {
   final DotType type;
   final Icon icon;
 
-  Dot({this.radius, this.color, this.type, this.icon});
+  Dot({
+    required this.radius,
+    required this.color,
+    required this.type,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
+    return Center(
       child: type == DotType.icon
           ? Icon(
               icon.icon,
               color: color,
               size: 1.3 * radius,
             )
-          : new Transform.rotate(
+          : Transform.rotate(
               angle: type == DotType.diamond ? pi / 4 : 0.0,
               child: Container(
                 width: radius,

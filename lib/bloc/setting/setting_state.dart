@@ -16,7 +16,7 @@ class SettingSuccess extends SettingState {}
 class SettingFailed extends SettingState {
   final String message;
 
-  const SettingFailed({this.message});
+  const SettingFailed({required this.message});
 
   @override
   List<Object> get props => [this.message];

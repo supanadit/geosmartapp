@@ -5,17 +5,13 @@ import 'package:geosmart/bloc/setting/setting_state.dart';
 import 'package:geosmart/model/setting.dart';
 import 'package:geosmart/service/setting_service.dart';
 import 'package:geosmart/service/unique_id_service.dart';
-import 'package:meta/meta.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
   final AuthenticationBloc authenticationBloc;
 
-  SettingBloc({@required this.authenticationBloc}) : super(SettingInitial());
-
-  @override
-  Stream<SettingState> mapEventToState(SettingEvent event) async* {
-    if (event is SettingSet) {
-      yield SettingProgress();
+  SettingBloc({required this.authenticationBloc}) : super(SettingInitial()) {
+    on<SettingSet>((event, emit) async {
+      emit(SettingProgress());
       if (event.host != null && event.host != "") {
         try {
           final s = await UniqueIDService().getUniqueID(
@@ -26,15 +22,15 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
             event.host,
             s.id,
           ));
-          yield SettingSuccess();
+          emit(SettingSuccess());
         } catch (_) {
-          yield SettingFailed(
+          emit(SettingFailed(
             message: "Make sure your host is correct and alive.",
-          );
+          ));
         }
       } else {
-        yield SettingFailed(message: "Host cannot null or empty.");
+        emit(SettingFailed(message: "Host cannot null or empty."));
       }
-    }
+    });
   }
 }

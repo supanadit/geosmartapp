@@ -2,7 +2,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geosmart/config.dart';
 import 'package:geosmart/page/map_page.dart';
 import 'package:geosmart/page/setting_page.dart';
 import 'package:geosmart/page/startup_page.dart';
@@ -58,7 +57,9 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (ctx, state) {
           if (state is AuthenticationSuccess) {
-            return MapPage();
+            return MapPage(
+              title: 'Geo Smart App',
+            );
           }
           if (state is AuthenticationFailed) {
             return SettingPage();

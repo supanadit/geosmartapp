@@ -3,30 +3,28 @@ import 'package:geosmart/bloc/authentication/authentication.dart';
 import 'package:geosmart/bloc/position/position_event.dart';
 import 'package:geosmart/bloc/position/position_state.dart';
 import 'package:geosmart/service/position_service.dart';
-import 'package:meta/meta.dart';
 
 class PositionBloc extends Bloc<PositionEvent, PositionState> {
   final AuthenticationBloc authenticationBloc;
 
-  PositionBloc({@required this.authenticationBloc})
-      : super(PositionTrackingIdle());
+  PositionBloc({required this.authenticationBloc})
+      : super(PositionTrackingIdle()) {
+    on<PositionStartTracking>((event, emit) async {
+      emit(PositionTrackingStarted());
+    });
 
-  @override
-  Stream<PositionState> mapEventToState(PositionEvent event) async* {
-    if (event is PositionStartTracking) {
-      yield PositionTrackingStarted();
-    }
-    if (event is PositionStopTracking) {
+    on<PositionStopTracking>((event, emit) async {
       try {
         await PositionService(
           dio: authenticationBloc.dio,
         ).stopTracking();
-        yield PositionTrackingIdle();
+        emit(PositionTrackingIdle());
       } catch (e) {
-        yield PositionTrackingFailed();
+        emit(PositionTrackingFailed());
       }
-    }
-    if (event is PositionSend) {
+    });
+
+    on<PositionSend>((event, emit) async {
       try {
         PositionService(
           dio: authenticationBloc.dio,
@@ -38,8 +36,8 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
         await PositionService(
           dio: authenticationBloc.dio,
         ).stopTracking();
-        yield PositionTrackingFailed();
+        emit(PositionTrackingFailed());
       }
-    }
+    });
   }
 }

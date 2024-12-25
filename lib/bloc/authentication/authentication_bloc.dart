@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geosmart/bloc/authentication/authentication_event.dart';
 import 'package:geosmart/bloc/authentication/authentication_state.dart';
 import 'package:geosmart/service/setting_service.dart';
-import 'package:meta/meta.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -13,26 +12,23 @@ class AuthenticationBloc
 
   AuthenticationBloc({
     // @required this.alice,
-    @required this.dio,
-  }) : super(AuthenticationInitial());
-
-  @override
-  Stream<AuthenticationState> mapEventToState(
-    AuthenticationEvent event,
-  ) async* {
-    if (event is AuthenticationStarted) {
-      yield AuthenticationProgress();
+    required this.dio,
+  }) : super(AuthenticationInitial()) {
+    on<AuthenticationStarted>((event, emit) async {
+      emit(AuthenticationProgress());
       final s = await SettingService().getSetting();
       if (s.isValid()) {
-        yield AuthenticationSuccess();
+        emit(AuthenticationSuccess());
       } else {
-        yield AuthenticationFailed();
+        emit(AuthenticationFailed());
       }
-    }
+    });
 
-    if (event is AuthenticationClear) {
-      await SettingService().clearSetting();
-      yield AuthenticationFailed();
-    }
+    on<AuthenticationClear>(
+      (event, emit) async {
+        await SettingService().clearSetting();
+        emit(AuthenticationFailed());
+      },
+    );
   }
 }

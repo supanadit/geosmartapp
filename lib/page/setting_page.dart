@@ -20,7 +20,7 @@ class _SettingPageState extends State<SettingPage> {
       body: BlocListener<SettingBloc, SettingState>(
         listener: (ctx, state) {
           if (state is SettingFailed) {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(state.message),
               duration: Duration(seconds: 3),
             ));
@@ -59,8 +59,10 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                   Container(
                     width: double.infinity,
-                    child: FlatButton(
-                      color: Colors.blueAccent,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                      ),
                       onPressed: () {
                         BlocProvider.of<SettingBloc>(context).add(
                           SettingSet(host: _hostController.text),

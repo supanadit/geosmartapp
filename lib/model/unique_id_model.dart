@@ -1,8 +1,8 @@
 class UniqueIDModel {
-  String id;
+  late String id;
   bool error = false;
 
-  UniqueIDModel({this.id});
+  UniqueIDModel({required this.id});
 
   UniqueIDModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

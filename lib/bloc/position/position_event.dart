@@ -13,7 +13,7 @@ class PositionSend extends PositionEvent {
   final String lat;
   final String lng;
 
-  const PositionSend({this.lat, this.lng});
+  const PositionSend({required this.lat, required this.lng});
 
   @override
   List<Object> get props => [this.lat, this.lng];

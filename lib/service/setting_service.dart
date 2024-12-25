@@ -26,8 +26,8 @@ class SettingService {
   Future<SettingModel> getSetting() async {
     SharedPreferences sharedPreferences = await this.getSharedPreferences();
     return SettingModel(
-      sharedPreferences.getString(_host),
-      sharedPreferences.getString(_id),
+      sharedPreferences.getString(_host) ?? '',
+      sharedPreferences.getString(_id) ?? '',
     );
   }
 }
