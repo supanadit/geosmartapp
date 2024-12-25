@@ -1,4 +1,4 @@
-package com.example.geosmart
+package com.supanadit.geosmart
 
 import io.flutter.embedding.android.FlutterActivity
 

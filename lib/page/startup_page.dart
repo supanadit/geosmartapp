@@ -6,7 +6,8 @@ class StartupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
+        child: SizedBox(
+          height: 50,
           child: Column(
             children: <Widget>[
               Loader(),
@@ -16,7 +17,6 @@ class StartupPage extends StatelessWidget {
               Text("Preparing System")
             ],
           ),
-          height: 50,
         ),
       ),
     );

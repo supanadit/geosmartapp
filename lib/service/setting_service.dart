@@ -17,14 +17,14 @@ class SettingService {
   }
 
   Future<SettingModel> clearSetting() async {
-    SharedPreferences sharedPreferences = await this.getSharedPreferences();
+    SharedPreferences sharedPreferences = await getSharedPreferences();
     sharedPreferences.remove(_host);
     sharedPreferences.remove(_id);
     return await getSetting();
   }
 
   Future<SettingModel> getSetting() async {
-    SharedPreferences sharedPreferences = await this.getSharedPreferences();
+    SharedPreferences sharedPreferences = await getSharedPreferences();
     return SettingModel(
       sharedPreferences.getString(_host) ?? '',
       sharedPreferences.getString(_id) ?? '',

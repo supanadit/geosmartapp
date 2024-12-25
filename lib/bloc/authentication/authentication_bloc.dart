@@ -7,11 +7,9 @@ import 'package:geosmart/service/setting_service.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  // final Alice alice;
   final Dio dio;
 
   AuthenticationBloc({
-    // @required this.alice,
     required this.dio,
   }) : super(AuthenticationInitial()) {
     on<AuthenticationStarted>((event, emit) async {
